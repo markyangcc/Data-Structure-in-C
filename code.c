@@ -11,6 +11,8 @@ struct node
     struct node *next;
 };
 
+struct node header;
+
 void createsinglelist(struct node *header, struct node **ptr, int data)
 {
     struct node *newnode = malloc(sizeof(struct node));
@@ -23,11 +25,6 @@ void createsinglelist(struct node *header, struct node **ptr, int data)
 
     newnode->data = data;
     newnode->next = NULL;
-}
-
-void createdoublylist(struct node *header,struct node **ptr,int data)
-{
-    
 }
 
 void swap(struct node *L, int position)
