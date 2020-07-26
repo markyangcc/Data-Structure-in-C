@@ -1,6 +1,10 @@
 /* 通过只调整指针（而不是数据）来交换两个相邻的元素，使用：
 b.双链表 */
 
+//使用双链表时其实没必要知道要交换结点的前序结点，因为有指针指向它
+//但是为了将单链表双链表统一，在赋值tempnode的判断条件处没有更改了
+//null pointer 如果被看作一个临时结点，注意它没有prev指针域
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -41,7 +45,7 @@ void swap(struct node *L, int position)
     //get list length
     struct node *tempL = L;
     int nodenum = 0; //total nodes num of the list
-    while (tempL != NULL)
+    while (tempL->next != NULL)
     {
         tempL = tempL->next;
         nodenum++;
@@ -53,7 +57,7 @@ void swap(struct node *L, int position)
         exit(EXIT_FAILURE);
     }
     //find previous node
-    int currentnodeindex = 1; //current nodes index of the list
+    int currentnodeindex = 0; //current nodes index of the list
     while (L != NULL)
     {
         if (position == currentnodeindex + 1)
@@ -72,15 +76,28 @@ void swap(struct node *L, int position)
     tempnode3->next = tempnode2;
     tempnode2->prev = tempnode3;
     tempnode2->next = tempnode4;
-    tempnode4->prev = tempnode2;
+    //id tempnode4 is the null pointer, it can't pointer to other node, only other nodes can point to null pointer
+    if (tempnode4 != NULL)
+        tempnode4->prev = tempnode2;
 }
 
-void printlist(struct node *L)
+void printlistfrbegin(struct node *L)
 {
     while (L != NULL)
     {
         printf("%d\t", L->data);
         L = L->next;
+    }
+}
+//To prove that double-linked lists can also be printed in reverse order
+void printlistfrend(struct node *L, struct node *header)
+{
+    while (L->next != NULL)
+        L = L->next;
+    while (L != header)
+    {
+        printf("%d\t", L->data);
+        L = L->prev;
     }
 }
 
@@ -105,9 +122,12 @@ int main(void)
     int position;
     printf("Enter the node index(called position), so we will swap it with node whichs index is 'position + 1':");
     scanf("%d", &position);
-    swap(header->next, position);
-
-    printlist(header->next);
+    swap(header, position);
+    printf("print from begin: ");
+    printlistfrbegin(header->next);
+    printf("\n");
+    printf("print from end  : ");
+    printlistfrend(header->next, header);
 
     return 0;
 }
