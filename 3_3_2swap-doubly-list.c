@@ -1,5 +1,4 @@
 /* 通过只调整指针（而不是数据）来交换两个相邻的元素，使用：
-a.单链表
 b.双链表 */
 
 #include <stdio.h>
@@ -9,18 +8,20 @@ struct node
 {
     int data;
     struct node *next;
+    struct node *prev;
 };
 
 struct node header;
 
-void createsinglelist(struct node *header, struct node **ptr, int data)
+void createdoublylist(struct node *header, struct node **ptr, int data)
 {
     struct node *newnode = malloc(sizeof(struct node));
-    //make the list link to header_Ler
+    //make the list link to headerer
     if (header->next == NULL)
         header->next = newnode;
-    //link new node to previous list
+
     (*ptr)->next = newnode;
+    newnode->prev = (*ptr);
     (*ptr) = newnode;
 
     newnode->data = data;
@@ -30,11 +31,12 @@ void createsinglelist(struct node *header, struct node **ptr, int data)
 void swap(struct node *L, int position)
 {
     //allocat temp pointer to store some important nodes' address
-    struct node *tempptr1 = malloc(sizeof(struct node));
-    struct node *tempptr2 = malloc(sizeof(struct node));
-    struct node *tempptr3 = malloc(sizeof(struct node));
-    struct node *tempptr4 = malloc(sizeof(struct node));
-    tempptr1->next = tempptr2->next = tempptr3->next = tempptr4->next = NULL;
+    struct node *tempnode1 = malloc(sizeof(struct node));
+    struct node *tempnode2 = malloc(sizeof(struct node));
+    struct node *tempnode3 = malloc(sizeof(struct node));
+    struct node *tempnode4 = malloc(sizeof(struct node));
+    tempnode1->next = tempnode2->next = tempnode3->next = tempnode4->next = NULL;
+    tempnode1->prev = tempnode2->prev = tempnode3->prev = tempnode4->prev = NULL;
 
     //get list length
     struct node *tempL = L;
@@ -50,25 +52,27 @@ void swap(struct node *L, int position)
         fprintf(stderr, "Error,list is only %d in length.", nodenum);
         exit(EXIT_FAILURE);
     }
-
     //find previous node
     int currentnodeindex = 1; //current nodes index of the list
     while (L != NULL)
     {
         if (position == currentnodeindex + 1)
         {
-            tempptr1 = L;
-            tempptr2 = L->next;
-            tempptr3 = L->next->next;
-            tempptr4 = L->next->next->next;
+            tempnode1 = L;
+            tempnode2 = L->next;
+            tempnode3 = L->next->next;
+            tempnode4 = L->next->next->next;
         }
         L = L->next;
         currentnodeindex++;
     }
     //Modify the pointing relationship of the front and back pointers of the nodes to be exchanged.
-    tempptr1->next = tempptr3;
-    tempptr3->next = tempptr2;
-    tempptr2->next = tempptr4;
+    tempnode1->next = tempnode3;
+    tempnode3->prev = tempnode1;
+    tempnode3->next = tempnode2;
+    tempnode2->prev = tempnode3;
+    tempnode2->next = tempnode4;
+    tempnode4->prev = tempnode2;
 }
 
 void printlist(struct node *L)
@@ -93,18 +97,17 @@ int main(void)
 
     struct node *ptr = header; //ptr is used to move on the list
 
-    createsinglelist(header, &ptr, 1);
-    createsinglelist(header, &ptr, 2);
-    createsinglelist(header, &ptr, 3);
-    createsinglelist(header, &ptr, 4);
-    createsinglelist(header, &ptr, 5);
+    createdoublylist(header, &ptr, 1);
+    createdoublylist(header, &ptr, 2);
+    createdoublylist(header, &ptr, 3);
+    createdoublylist(header, &ptr, 4);
 
     int position;
     printf("Enter the node index(called position), so we will swap it with node whichs index is 'position + 1':");
     scanf("%d", &position);
     swap(header->next, position);
 
-    printlist(header->next); //header->next is the beginning of the actually linked list, except the header
+    printlist(header->next);
 
     return 0;
 }
