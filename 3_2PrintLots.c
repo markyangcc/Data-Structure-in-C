@@ -1,4 +1,4 @@
-/*给你一个链表L和另一个链表P，他们包含以升序排列的整数。操作PrintLots(L,P)将打印L中那些由P指定的位置上的元素。
+/*给你一个链表L和另一个链表P，他们包含以升序排列的整数。操作PrintLots(L,P)将打印L中那些由P指定的位置上的元素
 例如，如果P=1，3，4，6，那么L中的第1，3，4，6个元素将被打印出来
 写出程序PrintLots(L,P)。你应该只使用基本的表操作。该程序的运行时间是多少？
 */
@@ -22,45 +22,6 @@ struct node header_P;
 void createlist(struct node *header, struct node **ptr, int data);
 void printlist(struct node *L); //print list L and P
 void PrintLots(struct node *L, struct node *P);
-
-void createlist(struct node *header, struct node **ptr, int data)
-{
-    struct node *newnode = malloc(sizeof(struct node));
-    //make the list link to header_Ler
-    if (header->next == NULL)
-        header->next = newnode;
-    //link new node to previous list
-    (*ptr)->next = newnode;
-    (*ptr) = newnode;
-
-    newnode->data = data;
-    newnode->next = NULL;
-}
-
-void printlist(struct node *L)
-{
-    while (L != NULL)
-    {
-        printf("%5d", L->data);
-        L = L->next;
-    }
-}
-
-void PrintLots(struct node *L, struct node *P)
-{
-    int count = 1;
-    while (P != NULL)
-    {
-        //move to positions
-        while (P->data != count)
-        {
-            L = L->next;
-            count++;
-        }
-        printf("%5d", L->data);
-        P = P->next;
-    }
-}
 
 int main(void)
 {
@@ -109,4 +70,43 @@ int main(void)
     PrintLots(header_L->next, header_P->next);
 
     return 0;
+}
+
+void createlist(struct node *header, struct node **ptr, int data)
+{
+    struct node *newnode = malloc(sizeof(struct node));
+    //make the list link to header_Ler
+    if (header->next == NULL)
+        header->next = newnode;
+    //link new node to previous list
+    (*ptr)->next = newnode;
+    (*ptr) = newnode;
+
+    newnode->data = data;
+    newnode->next = NULL;
+}
+
+void printlist(struct node *L)
+{
+    while (L != NULL)
+    {
+        printf("%5d", L->data);
+        L = L->next;
+    }
+}
+
+void PrintLots(struct node *L, struct node *P)
+{
+    int count = 1;
+    while (P != NULL)
+    {
+        //move to positions
+        while (P->data != count)
+        {
+            L = L->next;
+            count++;
+        }
+        printf("%5d", L->data);
+        P = P->next;
+    }
 }
