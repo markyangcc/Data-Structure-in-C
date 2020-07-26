@@ -1,6 +1,13 @@
 /* 通过只调整指针（而不是数据）来交换两个相邻的元素，使用：
 a.单链表 */
 
+//第一次写代码时，将header->next 作为参数传递给swap()
+//这样写如法处理第一个节点的交换问题
+//因为我将头结点与后面的链表区分对待了
+//但是为链表引入头结点就是为了解决移动指针时的麻烦
+//之前的写法导致引入的头结点的作用没有发挥出来，实属败笔
+//修正后，传参应该传header, 这个头结点位于链表的0位置处
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -38,7 +45,7 @@ void swap(struct node *L, int position)
     //get list length
     struct node *tempL = L;
     int nodenum = 0; //total nodes num of the list
-    while (tempL != NULL)
+    while (tempL->next != NULL)
     {
         tempL = tempL->next;
         nodenum++;
@@ -51,7 +58,7 @@ void swap(struct node *L, int position)
     }
 
     //find previous node
-    int currentnodeindex = 1; //current nodes index of the list
+    int currentnodeindex = 0; //current nodes index of the list
     while (L != NULL)
     {
         if (position == currentnodeindex + 1)
@@ -101,7 +108,7 @@ int main(void)
     int position;
     printf("Enter the node index(called position), so we will swap it with node whichs index is 'position + 1':");
     scanf("%d", &position);
-    swap(header->next, position);
+    swap(header, position);
 
     printlist(header->next); //header->next is the beginning of the actually linked list, except the header
 
