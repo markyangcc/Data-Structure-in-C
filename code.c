@@ -8,49 +8,52 @@ struct node
     int data;
     struct node *next;
 };
-typedef struct node *ptrtonode; //define a argument point to the "node" struct
-typedef ptrtonode List;         //give the pointer a alias
 
-struct node head;
+struct node header; //declare a global node called header
 
-
-void createlist(struct node **head, int data);
+void createlist(struct node *header, struct node **ptr, int data);
 void printlist(struct node *L);
 
 int main(void)
 {
-    struct node *head = malloc(sizeof(struct node));
-    if (!head)
+    // initialize the header
+    struct node *header = malloc(sizeof(struct node));
+    if (!header)
     {
         perror("malloc node");
         exit(EXIT_FAILURE);
     };
-    head->next = NULL;
-    // initialize other fields of head
+    header->next = NULL;
 
-    createlist(&head, 1);
-    createlist(&head, 1);
+    struct node *ptr = header; //ptr is used to move on the list
 
-    printlist(head->next);
+    createlist(header, &ptr, 1);
+    createlist(header, &ptr, 2);
+
+    printlist(header->next); //header->next is the beginning of the actually linked list, except the header
 
     return 0;
 }
 
-void createlist(struct node **head, int data)
+void createlist(struct node *header, struct node **ptr, int data)
 {
-    List newnode = malloc(sizeof(struct node));
-
-    if ((*head)->next == NULL)
-        (*head)->next = newnode;
+    struct node *newnode = malloc(sizeof(struct node));
+    //make the list link to headerer
+    if (header->next == NULL)
+        header->next = newnode;
+    //link new node to previous list
+    (*ptr)->next = newnode;
+    (*ptr) = newnode;
 
     newnode->data = data;
     newnode->next = NULL;
 }
+
 void printlist(struct node *L)
 {
-    while (L->next != NULL)
+    while (L != NULL)
     {
-        printf("%5d", L->data);
+        printf("%d\t", L->data);
         L = L->next;
     }
 }
