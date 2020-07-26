@@ -4,6 +4,7 @@
 */
 
 //采用带头结点的链表，两个链表结构声明为全局变量
+//时间复杂度是 O(m*n) m，n分别是L，P链表长度
 
 #include <stdio.h>
 #include <stdlib.h>
