@@ -1,6 +1,8 @@
 # Data-Structure-in-C
 Data Structure and Algorithm Analysis in C
 
+准备更新文件夹下面的文件，专注于实现各种数据结构，并将做题移动Unnamed 仓库下
+
 3.1 编写一个打印单链表的所有元素的程序
 
 3.2 给你一个链表L和另一个链表P，他们包含以升序排列的整数。操作PrintLots(L,P)将打印L中那些由P指定的位置上的元素
