@@ -13,4 +13,6 @@ Data Structure and Algorithm Analysis in C
     a.单链表 
     b.双链表 
 
+removeListNode.c 联发科软件开发的笔试题，题目很简单，但用C处理输入很头疼，主要是处理技巧不记得了
+
                     
